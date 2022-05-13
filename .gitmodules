@@ -9,3 +9,4 @@
 [submodule "submodules/quickstart-amazon-eks-nodegroup"]
 	path = submodules/quickstart-amazon-eks-nodegroup
 	url = https://github.com/aws-quickstart/quickstart-amazon-eks-nodegroup.git
+	branch = main
