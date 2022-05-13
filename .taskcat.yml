@@ -32,4 +32,4 @@ tests:
       PerRegionSharedResources: "No"
     template: templates/mulesoft-main.template.yaml
     regions:
-      - us-east-2
+      - us-west-2

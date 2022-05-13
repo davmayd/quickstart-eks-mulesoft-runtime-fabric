@@ -299,7 +299,7 @@ Resources:
         PublicSubnet3ID: !GetAtt 'VPCStack.Outputs.PublicSubnet3ID'
         RemoteAccessCIDR: !Ref RemoteAccessCidr
         KeyPairName: !Ref KeyPairName
-        ConfigSetName: !Ref AWS::StackName
+#        ConfigSetName: !Ref AWS::StackName
         PerAccountSharedResources: !Ref PerAccountSharedResources
         PerRegionSharedResources: !Ref PerRegionSharedResources
         ProvisionBastionHost: 'Disabled'
