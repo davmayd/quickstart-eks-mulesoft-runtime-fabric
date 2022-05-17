@@ -1,7 +1,12 @@
 
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Test
+Description: Mulesoft (qs-1t29t80g0)
 Metadata:
+  cfn-lint:
+    config:
+      ignore_checks:
+        - W9006
+        - W9901
   AWS::CloudFormation::Interface:
     ParameterGroups:
       - Label:
@@ -20,10 +25,9 @@ Metadata:
       - Label:
           default: EKS configuration
         Parameters:
-          - KubernetesVersion
+          - ALBIngressController
           - NodeInstanceType
-          - NumofSecondaryNodes
-          - NodeVolumeSize
+          - NumberOfNodes
           - PerAccountSharedResources
           - PerRegionSharedResources
       - Label:
@@ -39,12 +43,10 @@ Metadata:
         default: Per-Region shared resources
       NodeInstanceType:
         default: Node instance type
-      NodeVolumeSize:
-        default: Node EBS volume size
-      NumofSecondaryNodes:
-        default: Number of secondary nodes
-      KubernetesVersion:
-        default: Kubernetes version
+      NumberOfNodes:
+        default: Number of nodes
+      ALBIngressController:
+        default: AWS load balancer controller
       KeyPairName:
         default: Key pair name
       RemoteAccessCidr:
@@ -126,28 +128,17 @@ Parameters:
     ConstraintDescription: Must be a valid EC2 instance type
     Default: m5.xlarge
     Type: String
-  NodeVolumeSize:
-    Description: Size of EBS volumes for master node instances, in gigabytes.
-    Default: 200
-    Type: String
-  NumofSecondaryNodes:
-    Description: Initial number of secondary node instances to create.
-      If you do not have large enough instances to boot the number of secondary pods, the deployment will fail.
-    AllowedValues:
-      - 1
-      - 2
-      - 3
-      - 4
-      - 5
-      - 6
-      - 7
-    Default: 2
+  NumberOfNodes:
+    Default: 3
+    MinValue: 0
+    MaxValue: 450
+    Description: Number of Amazon EKS node instances. The default is one for each of the three Availability Zones.
     Type: Number
-  KubernetesVersion:
-    Description: Kubernetes control plane version.
-    AllowedValues: ["1.17", "1.18", "1.19", "1.20", "1.21"]
-    Default: "1.21"
+  ALBIngressController:
     Type: String
+    AllowedValues: [ "Enabled", "Disabled" ]
+    Default: "Enabled"
+    Description: Choose "Enabled" to deploy the AWS load balancer controller.
   KeyPairName:
     Description: Public/private key pairs allow you to securely connect to your instance
       after it launches.
@@ -290,6 +281,7 @@ Resources:
               !Ref "QSS3BucketRegion",
             ]
       Parameters:
+        ALBIngressController: !Ref ALBIngressController
         VPCID: !GetAtt 'VPCStack.Outputs.VPCID'
         PrivateSubnet1ID: !GetAtt 'VPCStack.Outputs.PrivateSubnet1AID'
         PrivateSubnet2ID: !GetAtt 'VPCStack.Outputs.PrivateSubnet2AID'
@@ -306,8 +298,8 @@ Resources:
 #        AdditionalEKSAdminUserArn: !Join [",", !Ref AdditionalEKSAdminUserArn]
 #        AdditionalEKSAdminRoleArn: !Join [",", !Ref AdditionalEKSAdminRoleArn]
         NodeInstanceType: !Ref NodeInstanceType
-        NumberOfNodes: "1"
-        MaxNumberOfNodes: "1"
+        NumberOfNodes: !Ref NumberOfNodes
+#        MaxNumberOfNodes: "1"
         QSS3BucketName: !Ref QSS3BucketName
         QSS3KeyPrefix: !Sub "${QSS3KeyPrefix}submodules/quickstart-amazon-eks/"
         QSS3BucketRegion: !Ref QSS3BucketRegion
