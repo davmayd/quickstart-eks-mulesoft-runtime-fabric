@@ -301,7 +301,7 @@ Resources:
 #        ConfigSetName: !Ref AWS::StackName
         PerAccountSharedResources: !Ref PerAccountSharedResources
         PerRegionSharedResources: !Ref PerRegionSharedResources
-        ProvisionBastionHost: 'Disabled'
+        ProvisionBastionHost: 'Enabled'
 #        AdditionalEKSAdminUserArn: !Join [",", !Ref AdditionalEKSAdminUserArn]
 #        AdditionalEKSAdminRoleArn: !Join [",", !Ref AdditionalEKSAdminRoleArn]
         EKSClusterName: !Ref EKSClusterName
@@ -321,4 +321,4 @@ Outputs:
   NodeGroupSecurityGroup:
     Value: !GetAtt EKSStack.Outputs.NodeGroupSecurityGroup
   OIDCIssuerURL:
-    Value: !GetAtt EKSStack.Outputs.OIDCIssuerURL        
+    Value: !GetAtt EKSStack.Outputs.OIDCIssuerURL
