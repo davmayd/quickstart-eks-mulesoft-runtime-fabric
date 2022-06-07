@@ -243,11 +243,38 @@ Parameters:
 Conditions:
   UsingDefaultBucket: !Equals [!Ref QSS3BucketName, "aws-quickstart"]
 Resources:
-  VPCStack:
+  # VPCStack:
+  #   Type: AWS::CloudFormation::Stack
+  #   Properties:
+  #     TemplateURL: !Sub
+  #       - https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}submodules/quickstart-aws-vpc/templates/aws-vpc.template.yaml
+  #       - S3Bucket:
+  #           !If [
+  #             UsingDefaultBucket,
+  #             !Sub "${QSS3BucketName}-${AWS::Region}",
+  #             !Ref "QSS3BucketName",
+  #           ]
+  #         S3Region:
+  #           !If [
+  #             UsingDefaultBucket,
+  #             !Ref "AWS::Region",
+  #             !Ref "QSS3BucketRegion",
+  #           ]
+  #     Parameters:
+  #       AvailabilityZones: !Join [",", !Ref AvailabilityZones]
+  #       NumberOfAZs: "3"
+  #       VPCCIDR: !Ref VpcCidr
+  #       PrivateSubnet1ACIDR: !Ref "PrivateSubnet1Cidr"
+  #       PrivateSubnet2ACIDR: !Ref "PrivateSubnet2Cidr"
+  #       PrivateSubnet3ACIDR: !Ref "PrivateSubnet3Cidr"
+  #       PublicSubnet1CIDR: !Ref "PublicSubnet1Cidr"
+  #       PublicSubnet2CIDR: !Ref "PublicSubnet2Cidr"
+  #       PublicSubnet3CIDR: !Ref "PublicSubnet3Cidr"
+  EKSStack:
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: !Sub
-        - https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}submodules/quickstart-aws-vpc/templates/aws-vpc.template.yaml
+        - https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}submodules/quickstart-amazon-eks/templates/amazon-eks-entrypoint-new-vpc.template.yaml
         - S3Bucket:
             !If [
               UsingDefaultBucket,
@@ -263,39 +290,14 @@ Resources:
       Parameters:
         AvailabilityZones: !Join [",", !Ref AvailabilityZones]
         NumberOfAZs: "3"
+        ALBIngressController: !Ref ALBIngressController
         VPCCIDR: !Ref VpcCidr
-        PrivateSubnet1ACIDR: !Ref "PrivateSubnet1Cidr"
-        PrivateSubnet2ACIDR: !Ref "PrivateSubnet2Cidr"
-        PrivateSubnet3ACIDR: !Ref "PrivateSubnet3Cidr"
+        PrivateSubnet1CIDR: !Ref "PrivateSubnet1Cidr"
+        PrivateSubnet2CIDR: !Ref "PrivateSubnet2Cidr"
+        PrivateSubnet3CIDR: !Ref "PrivateSubnet3Cidr"
         PublicSubnet1CIDR: !Ref "PublicSubnet1Cidr"
         PublicSubnet2CIDR: !Ref "PublicSubnet2Cidr"
         PublicSubnet3CIDR: !Ref "PublicSubnet3Cidr"
-  EKSStack:
-    Type: AWS::CloudFormation::Stack
-    Properties:
-      TemplateURL: !Sub
-        - https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}submodules/quickstart-amazon-eks/templates/amazon-eks-entrypoint-existing-vpc.template.yaml
-        - S3Bucket:
-            !If [
-              UsingDefaultBucket,
-              !Sub "${QSS3BucketName}-${AWS::Region}",
-              !Ref "QSS3BucketName",
-            ]
-          S3Region:
-            !If [
-              UsingDefaultBucket,
-              !Ref "AWS::Region",
-              !Ref "QSS3BucketRegion",
-            ]
-      Parameters:
-        ALBIngressController: !Ref ALBIngressController
-        VPCID: !GetAtt 'VPCStack.Outputs.VPCID'
-        PrivateSubnet1ID: !GetAtt 'VPCStack.Outputs.PrivateSubnet1AID'
-        PrivateSubnet2ID: !GetAtt 'VPCStack.Outputs.PrivateSubnet2AID'
-        PrivateSubnet3ID: !GetAtt 'VPCStack.Outputs.PrivateSubnet3AID'
-        PublicSubnet1ID: !GetAtt 'VPCStack.Outputs.PublicSubnet1ID'
-        PublicSubnet2ID: !GetAtt 'VPCStack.Outputs.PublicSubnet2ID'
-        PublicSubnet3ID: !GetAtt 'VPCStack.Outputs.PublicSubnet3ID'
         RemoteAccessCIDR: !Ref RemoteAccessCidr
         KeyPairName: !Ref KeyPairName
 #        ConfigSetName: !Ref AWS::StackName
