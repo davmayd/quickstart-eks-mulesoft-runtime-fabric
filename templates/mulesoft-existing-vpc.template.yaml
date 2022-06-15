@@ -223,12 +223,6 @@ Conditions:
 Resources:
   EKSStack:
     Type: AWS::CloudFormation::Stack
-    Metadata:
-      DependsOn:
-      - !If [CreatePerRegionSharedResources, !Ref RegionalSharedResources, !Ref 'AWS::NoValue']
-      - !If [CreatePerAccountSharedResources, !Ref AccountSharedResources, !Ref 'AWS::NoValue']
-      - !If [CreateAdvancedConfigWithDefaults, !Ref AdvancedConfigDefaultsStack, !Ref 'AWS::NoValue']
-      - !If [DetectSharedStacks, !Ref AutoDetectSharedResources, !Ref 'AWS::NoValue']
     Properties:
       TemplateURL: !Sub
         - https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}submodules/quickstart-amazon-eks/templates/amazon-eks.template.yaml
