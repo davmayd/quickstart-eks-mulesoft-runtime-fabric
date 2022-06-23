@@ -1,5 +1,5 @@
 project:
-  name: test
+  name: quickstart-mulesoft-runtime-fabric
   owner: quickstart-eng@amazon.com
   lambda_source_path: functions/source
   lambda_zip_path: functions/packages
@@ -36,4 +36,4 @@ tests:
       PerRegionSharedResources: "No"
     template: templates/mulesoft-main.template.yaml
     regions:
-      - eu-central-1
+      - us-east-1
