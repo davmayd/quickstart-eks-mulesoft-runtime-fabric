@@ -30,6 +30,14 @@ Metadata:
           - QSS3BucketName
           - QSS3KeyPrefix
           - QSS3BucketRegion
+      - Label:
+          default: MuleSoft RTF configuration
+        Parameters:
+          - RTFFabricName
+          - ORG_ID
+          - UserName
+          - Password
+          - MuleLicenseKeyinbase64
     ParameterLabels:
       PrivateSubnet1ID:
         default: Private Subnet 1 ID
@@ -45,6 +53,16 @@ Metadata:
         default: IAM role
       SecurityGroup:
         default: EC2 security group
+      RTFFabricName:
+        default: Runtime Fabric Name
+      ORG_ID:
+        default: Oraganization ID of your Anypoint
+      UserName:
+        default: Anypoint Platform Username
+      Password:
+        default: Anypoint Platform Password
+      MuleLicenseKeyinbase64:
+        default: Mule License Key in Base 64 Format
       # DomainName:
       #   default: Domain name
 
@@ -85,6 +103,21 @@ Parameters:
   SecurityGroup:
     Description: Security group for the installer to use
     Type: AWS::EC2::SecurityGroup::Id
+  RTFFabricName:
+    Description: Runtime Fabric Name
+    Type: String
+  ORG_ID:
+    Description: Oraganization ID of your Anypoint
+    Type: String
+  UserName:
+    Description: Anypoint Platform Username
+    Type: String
+  Password:
+    Description: Anypoint Platform Password
+    Type: String
+  MuleLicenseKeyinbase64:
+    Description: Mule License Key in Base 64 Format
+    Type: String
   # DomainName:
   #   Description: DNS domain name that users can use to access the Rancher console.
   #   Type: String
@@ -235,6 +268,21 @@ Resources:
           SecurityGroup:
             description: "Security group for the installer to use"
             type: "String"
+          RTFFabricName:
+            description: Runtime Fabric Name
+            type: String
+          ORG_ID:
+            description: Oraganization ID of your Anypoint
+            type: String
+          UserName:
+            description: Anypoint Platform Username
+            type: String
+          Password:
+            description: Anypoint Platform Password
+            type: String
+          MuleLicenseKeyinbase64:
+            description: Mule License Key in Base 64 Format
+            type: "String"
           # DomainName:
           #   description: "DNS domain name that users can use to access the Rancher console."
           #   type: "String"
@@ -283,6 +331,22 @@ Resources:
                   Description: Security group for the installer to use
                   Type: "AWS::EC2::SecurityGroup::Id"
                   Default: "{{SecurityGroup}}"
+                RTFFabricName:
+                  Description: Runtime Fabric Name
+                  Default: "{{RTFFabricName}}"
+                ORG_ID:
+                  Description: Oraganization ID of your Anypoint
+                  Default: "{{ORG_ID}}"
+                UserName:
+                  Description: Anypoint Platform Username
+                  Default: "{{UserName}}"
+                Password:
+                  Description: Anypoint Platform Password
+                  Default: "{{Password}}"
+                MuleLicenseKeyinbase64:
+                  Description: Mule License Key in Base 64 Format
+                  Type: "String"
+                  Default: "{{MuleLicenseKeyinbase64}}"
               Resources:
                 MuleSoftRtfManagedS3Policy:
                   Type: 'AWS::IAM::ManagedPolicy'
@@ -365,7 +429,7 @@ Resources:
             Parameters:
               commands:
                 - wget -O /tmp/mulertf_install.sh https://{{QSS3BucketName}}.s3.{{QSS3BucketRegion}}.amazonaws.com/{{QSS3KeyPrefix}}scripts/mulertf_install.sh
-                - /bin/su - ec2-user -c 'cd /tmp && sh -x mulertf_install.sh {{Region}} {{QSS3BucketName}} {{QSS3KeyPrefix}} {{QSS3BucketRegion}} {{EKSClusterName}} '
+                - /bin/su - ec2-user -c 'cd /tmp && sh -x mulertf_install.sh {{Region}} {{QSS3BucketName}} {{QSS3KeyPrefix}} {{QSS3BucketRegion}} {{EKSClusterName}} {{RTFFabricName}} {{ORG_ID}} {{UserName}} {{Password}} {{MuleLicenseKeyinbase64}}'
         # Determines if CFN Needs to be Signaled or if Work flow should just end
         - name: CFNSignalEnd
           action: aws:branch
@@ -452,6 +516,11 @@ Resources:
                   eks_cluster = event['ResourceProperties']['EKSClusterName']
                   iam_role = event['ResourceProperties']['IAMRole']
                   security_group = event['ResourceProperties']['SecurityGroup']
+                  mule_rtffabricname = event['ResourceProperties']['RTFFabricName']
+                  mule_orgid = event['ResourceProperties']['ORG_ID']
+                  mule_username = event['ResourceProperties']['UserName']
+                  mule_password = event['ResourceProperties']['Password']
+                  mule_license = event['ResourceProperties']['MuleLicenseKeyinbase64']
                   if qs_bucket == "aws-quickstart":
                     qs_bucket = "aws-quickstart-" + qs_region
 
@@ -487,6 +556,21 @@ Resources:
                           ],
                           'SecurityGroup': [
                               security_group
+                          ],
+                          'RTFFabricName': [
+                              mule_rtffabricname
+                          ],
+                          'ORG_ID': [
+                              mule_orgid
+                          ],
+                          'UserName': [
+                              mule_username
+                          ],
+                          'Password': [
+                              mule_password
+                          ],
+                          'MuleLicenseKeyinbase64': [
+                              mule_license
                           ]
                       },
                   )
@@ -523,6 +607,11 @@ Resources:
       EKSClusterName: !Ref EKSClusterName
       IAMRole: !Ref 'IAMRole'
       SecurityGroup: !Ref 'SecurityGroup'
+      RTFFabricName: !Ref 'RTFFabricName'
+      ORG_ID: !Ref 'ORG_ID'
+      UserName: !Ref 'UserName'
+      Password: !Ref 'Password'
+      MuleLicenseKeyinbase64: !Ref 'MuleLicenseKeyinbase64'
   SSMWaitHandle:
     Type: AWS::CloudFormation::WaitConditionHandle
   SSMWaitCondition:
@@ -538,3 +627,14 @@ Resources:
         Ref: "SSMWaitHandle"
       Timeout: "3600"
       Count: 1
+# Outputs:
+#   EKSClusterName:
+#     Value: !GetAtt EKSStack.Outputs.EKSClusterName
+#   BastionIP:
+#     Value: !GetAtt EKSStack.Outputs.BastionIP
+#   BastionSecurityGroup:
+#     Value: !GetAtt EKSStack.Outputs.BastionSecurityGroup
+#   NodeGroupSecurityGroup:
+#     Value: !GetAtt EKSStack.Outputs.NodeGroupSecurityGroup
+#   OIDCIssuerURL:
+#     Value: !GetAtt EKSStack.Outputs.OIDCIssuerURL
