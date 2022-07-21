@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ $# -lt 10 ]; then
-    echo "I need a minimum of 6 arguments to proceed. REGION, QSS3BucketName, QSS3KeyPrefix, QSS3BucketRegion, EKSCLUSTERNAME, RTFFabricName, ORG_ID, UserName, Password, MuleLicenseKeyinbase64" && exit 1
+    echo "I need a minimum of 6 arguments to proceed. REGION, QSS3BucketName, QSS3KeyPrefix, QSS3BucketRegion, EKSCLUSTERNAME, RTFFabricName, OrgID, UserName, Password, MuleLicenseKeyinbase64" && exit 1
 fi
 
 REGION=$1
@@ -10,7 +10,7 @@ QSS3KeyPrefix=$3
 QSS3BucketRegion=$4
 EKSCLUSTERNAME=$5
 RTFFabricName=$6
-ORG_ID=$7
+OrgID=$7
 UserName=$8
 Password=$9
 MuleLicenseKeyinbase64=$10
@@ -22,7 +22,7 @@ echo 'QSS3KeyPrefix' =$QSS3KeyPrefix
 echo 'QSS3BucketRegion' = $QSS3BucketRegion
 echo 'EKSCLUSTERNAME' =$EKSCLUSTERNAME
 echo 'RTFFabricName' =$RTFFabricName
-echo 'ORG_ID' =$ORG_ID
+echo 'OrgID' =$OrgID
 echo 'UserName'=$UserName
 echo 'Password'=$Password
 echo 'MuleLicenseKeyinbase64'=$MuleLicenseKeyinbase64
@@ -40,8 +40,8 @@ sudo yum -y install jq
 #TOKEN=$(curl -d "username=$USER_NAME&password=$PASSWORD" $BASE_URL/accounts/login | jq -r .access_token)
 TOKEN=$(curl -d "username=$UserName&password=$Password" $BASE_URL/accounts/login | jq -r .access_token)
 echo 'TOKEN' = $TOKEN
-# Step-2) Get organization ID: (this will get only root org UUID, this step is not needed if ORG_ID is provided by customer.)
-#ORG_ID=$(curl -H "Authorization: Bearer $TOKEN" $BASE_URL/accounts/api/profile | jq -r .organizationId)
+# Step-2) Get organization ID: (this will get only root org UUID, this step is not needed if OrgID is provided by customer.)
+#OrgID=$(curl -H "Authorization: Bearer $TOKEN" $BASE_URL/accounts/api/profile | jq -r .organizationId)
 
 #Update kube config to point to the cluster of our choice
 aws eks update-kubeconfig --name ${EKSCLUSTERNAME} --region $REGION
@@ -59,7 +59,7 @@ kubectl get svc
 # Create Runtime Fabric
 PAYLOAD=$(echo \{\"name\":\"$FABRIC_NAME\"\,\"vendor\":\"eks\"\,\"region\":\"us-east-1\"\})
 
-ActivationData=$(curl -X POST -H "Authorization: Bearer $TOKEN" -H 'Accept: application/json, text/plain, */*' -H 'Accept-Encoding: gzip, deflate, br' -H 'Content-Type: application/json;charset=UTF-8' -d $PAYLOAD $BASE_URL/runtimefabric/api/organizations/$ORG_ID/fabrics | jq -r .activationData)
+ActivationData=$(curl -X POST -H "Authorization: Bearer $TOKEN" -H 'Accept: application/json, text/plain, */*' -H 'Accept-Encoding: gzip, deflate, br' -H 'Content-Type: application/json;charset=UTF-8' -d $PAYLOAD $BASE_URL/runtimefabric/api/organizations/$OrgID/fabrics | jq -r .activationData)
 
 
 # Install rtfctl

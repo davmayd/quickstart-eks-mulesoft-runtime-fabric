@@ -34,7 +34,7 @@ Metadata:
           default: MuleSoft RTF configuration
         Parameters:
           - RTFFabricName
-          - ORG_ID
+          - OrgID
           - UserName
           - Password
           - MuleLicenseKeyinbase64
@@ -55,7 +55,7 @@ Metadata:
         default: EC2 security group
       RTFFabricName:
         default: Runtime Fabric Name
-      ORG_ID:
+      OrgID:
         default: Oraganization ID of your Anypoint
       UserName:
         default: Anypoint Platform Username
@@ -106,7 +106,7 @@ Parameters:
   RTFFabricName:
     Description: Runtime Fabric Name
     Type: String
-  ORG_ID:
+  OrgID:
     Description: Oraganization ID of your Anypoint
     Type: String
   UserName:
@@ -271,7 +271,7 @@ Resources:
           RTFFabricName:
             description: Runtime Fabric Name
             type: String
-          ORG_ID:
+          OrgID:
             description: Oraganization ID of your Anypoint
             type: String
           UserName:
@@ -334,9 +334,9 @@ Resources:
                 RTFFabricName:
                   Description: Runtime Fabric Name
                   Default: "{{RTFFabricName}}"
-                ORG_ID:
+                OrgID:
                   Description: Oraganization ID of your Anypoint
-                  Default: "{{ORG_ID}}"
+                  Default: "{{OrgID}}"
                 UserName:
                   Description: Anypoint Platform Username
                   Default: "{{UserName}}"
@@ -429,7 +429,7 @@ Resources:
             Parameters:
               commands:
                 - wget -O /tmp/mulertf_install.sh https://{{QSS3BucketName}}.s3.{{QSS3BucketRegion}}.amazonaws.com/{{QSS3KeyPrefix}}scripts/mulertf_install.sh
-                - /bin/su - ec2-user -c 'cd /tmp && sh -x mulertf_install.sh {{Region}} {{QSS3BucketName}} {{QSS3KeyPrefix}} {{QSS3BucketRegion}} {{EKSClusterName}} {{RTFFabricName}} {{ORG_ID}} {{UserName}} {{Password}} {{MuleLicenseKeyinbase64}}'
+                - /bin/su - ec2-user -c 'cd /tmp && sh -x mulertf_install.sh {{Region}} {{QSS3BucketName}} {{QSS3KeyPrefix}} {{QSS3BucketRegion}} {{EKSClusterName}} {{RTFFabricName}} {{OrgID}} {{UserName}} {{Password}} {{MuleLicenseKeyinbase64}}'
         # Determines if CFN Needs to be Signaled or if Work flow should just end
         - name: CFNSignalEnd
           action: aws:branch
@@ -517,7 +517,7 @@ Resources:
                   iam_role = event['ResourceProperties']['IAMRole']
                   security_group = event['ResourceProperties']['SecurityGroup']
                   mule_rtffabricname = event['ResourceProperties']['RTFFabricName']
-                  mule_orgid = event['ResourceProperties']['ORG_ID']
+                  mule_orgid = event['ResourceProperties']['OrgID']
                   mule_username = event['ResourceProperties']['UserName']
                   mule_password = event['ResourceProperties']['Password']
                   mule_license = event['ResourceProperties']['MuleLicenseKeyinbase64']
@@ -560,7 +560,7 @@ Resources:
                           'RTFFabricName': [
                               mule_rtffabricname
                           ],
-                          'ORG_ID': [
+                          'OrgID': [
                               mule_orgid
                           ],
                           'UserName': [
@@ -608,7 +608,7 @@ Resources:
       IAMRole: !Ref 'IAMRole'
       SecurityGroup: !Ref 'SecurityGroup'
       RTFFabricName: !Ref 'RTFFabricName'
-      ORG_ID: !Ref 'ORG_ID'
+      OrgID: !Ref 'OrgID'
       UserName: !Ref 'UserName'
       Password: !Ref 'Password'
       MuleLicenseKeyinbase64: !Ref 'MuleLicenseKeyinbase64'
