@@ -269,19 +269,19 @@ Resources:
             description: "Security group for the installer to use"
             type: "String"
           RTFFabricName:
-            description: Runtime Fabric Name
-            type: String
+            description: "Runtime Fabric Name"
+            type: "String"
           OrgID:
-            description: Oraganization ID of your Anypoint
-            type: String
+            description: "Oraganization ID of your Anypoint"
+            type: "String"
           UserName:
-            description: Anypoint Platform Username
-            type: String
+            description: "Anypoint Platform Username"
+            type: "String"
           Password:
-            description: Anypoint Platform Password
-            type: String
+            description: "Anypoint Platform Password"
+            type: "String"
           MuleLicenseKeyinbase64:
-            description: Mule License Key in Base 64 Format
+            description: "Mule License Key in Base 64 Format"
             type: "String"
           # DomainName:
           #   description: "DNS domain name that users can use to access the Rancher console."
