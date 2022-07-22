@@ -333,15 +333,19 @@ Resources:
                   Default: "{{SecurityGroup}}"
                 RTFFabricName:
                   Description: Runtime Fabric Name
+                  Type: "String"
                   Default: "{{RTFFabricName}}"
                 OrgID:
                   Description: Oraganization ID of your Anypoint
+                  Type: "String"
                   Default: "{{OrgID}}"
                 UserName:
                   Description: Anypoint Platform Username
+                  Type: "String"
                   Default: "{{UserName}}"
                 Password:
                   Description: Anypoint Platform Password
+                  Type: "String"
                   Default: "{{Password}}"
                 MuleLicenseKeyinbase64:
                   Description: Mule License Key in Base 64 Format
