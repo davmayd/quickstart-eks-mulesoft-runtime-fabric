@@ -308,7 +308,7 @@ Resources:
                   Default: "{{QSS3BucketName}}"
                   Description: "Name of Target S3 Bucket"
                 QSS3BucketRegion:
-                  Default: "us-east-2"
+                  Default: "us-east-1"
                   Description: "The AWS Region where the Quick Start S3 bucket (QSS3BucketName) is hosted. When using your own bucket, you must specify this value."
                   Type: "String"
                 QSS3KeyPrefix:
@@ -434,7 +434,6 @@ Resources:
               commands:
                 - wget -O /tmp/mulertf_install.sh https://{{QSS3BucketName}}.s3.{{QSS3BucketRegion}}.amazonaws.com/{{QSS3KeyPrefix}}scripts/mulertf_install.sh
                 - /bin/su - ec2-user -c 'cd /tmp && sh -x mulertf_install.sh {{Region}} {{QSS3BucketName}} {{QSS3KeyPrefix}} {{QSS3BucketRegion}} {{EKSClusterName}} {{RTFFabricName}} {{OrgID}} {{UserName}} {{Password}} {{MuleLicenseKeyinbase64}}'
-        # Determines if CFN Needs to be Signaled or if Work flow should just end
         - name: CFNSignalEnd
           action: aws:branch
           inputs:
