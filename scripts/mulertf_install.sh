@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ $# -lt 10 ]; then
-    echo "I need a minimum of 6 arguments to proceed. REGION, QSS3BucketName, QSS3KeyPrefix, QSS3BucketRegion, EKSCLUSTERNAME, RTFFabricName, OrgID, UserName, Password, MuleLicenseKeyinbase64" && exit 1
+    echo "I need a minimum of 10 arguments to proceed. REGION, QSS3BucketName, QSS3KeyPrefix, QSS3BucketRegion, EKSCLUSTERNAME, RTFFabricName, OrgID, UserName, Password, MuleLicenseKeyinbase64" && exit 1
 fi
 
 REGION=$1
@@ -57,7 +57,7 @@ kubectl get svc
 #curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
 
 # Create Runtime Fabric
-PAYLOAD=$(echo \{\"name\":\"$FABRIC_NAME\"\,\"vendor\":\"eks\"\,\"region\":\"us-east-1\"\})
+PAYLOAD=$(echo \{\"name\":\"$RTFFabricName\"\,\"vendor\":\"eks\"\,\"region\":\"us-east-1\"\})
 
 ActivationData=$(curl -X POST -H "Authorization: Bearer $TOKEN" -H 'Accept: application/json, text/plain, */*' -H 'Accept-Encoding: gzip, deflate, br' -H 'Content-Type: application/json;charset=UTF-8' -d $PAYLOAD $BASE_URL/runtimefabric/api/organizations/$OrgID/fabrics | jq -r .activationData)
 
@@ -86,11 +86,12 @@ chmod +x ./rtfctl
 
 # Start by creating the mandatory resources for ALB Ingress Controller in your cluster:
 
-if [ $QSS3BucketName == 'aws-quickstart' ]
-then
-  kubectl apply -f https://$QSS3BucketName-$REGION.s3.$REGION.amazonaws.com/$KeyPrefix/scripts/deploy.yaml
-else
-  kubectl apply -f https://$QSS3BucketName.s3.$QSS3BucketRegion.amazonaws.com/$KeyPrefix/scripts/deploy.yaml
-  ## Replace this URL when SSM is configured ##
-  #kubectl apply -f deploy.yaml
-fi
+# if [ $QSS3BucketName == 'aws-quickstart' ]
+# then
+#   kubectl apply -f https://$QSS3BucketName-$REGION.s3.$REGION.amazonaws.com/$KeyPrefix/scripts/deploy.yaml
+# else
+#   kubectl apply -f https://$QSS3BucketName.s3.$QSS3BucketRegion.amazonaws.com/$KeyPrefix/scripts/deploy.yaml
+# fi
+
+## Start by creating the mandatory resources for ALB Ingress Controller in your cluster: ##
+kubectl apply -f deploy.yaml
