@@ -63,8 +63,6 @@ Metadata:
         default: Anypoint Platform Password
       MuleLicenseKeyinbase64:
         default: Mule License Key in Base 64 Format
-      # DomainName:
-      #   default: Domain name
 
 Parameters:
   PrivateSubnet1ID:
@@ -118,10 +116,6 @@ Parameters:
   MuleLicenseKeyinbase64:
     Description: Mule License Key in Base 64 Format
     Type: String
-  # DomainName:
-  #   Description: DNS domain name that users can use to access the Rancher console.
-  #   Type: String
-  #   Default: aws.private
 Conditions:
   UsingDefaultBucket: !Equals [!Ref QSS3BucketName, 'aws-quickstart']
 
@@ -308,7 +302,7 @@ Resources:
                   Default: "{{QSS3BucketName}}"
                   Description: "Name of Target S3 Bucket"
                 QSS3BucketRegion:
-                  Default: "us-east-1"
+                  Default: "us-east-2"
                   Description: "The AWS Region where the Quick Start S3 bucket (QSS3BucketName) is hosted. When using your own bucket, you must specify this value."
                   Type: "String"
                 QSS3KeyPrefix:
@@ -432,7 +426,7 @@ Resources:
               CloudWatchLogGroupName: !Sub '/aws/Quick_Start/${AWS::StackName}'
             Parameters:
               commands:
-                - wget -O /tmp/mulertf_install.sh https://{{QSS3BucketName}}.s3.{{QSS3BucketRegion}}.amazonaws.com/{{QSS3KeyPrefix}}scripts/mulertf_install.sh
+                - aws s3 cp --recursive s3://{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/ /tmp/
                 - /bin/su - ec2-user -c 'cd /tmp && sh -x mulertf_install.sh {{Region}} {{QSS3BucketName}} {{QSS3KeyPrefix}} {{QSS3BucketRegion}} {{EKSClusterName}} {{RTFFabricName}} {{OrgID}} {{UserName}} {{Password}} {{MuleLicenseKeyinbase64}}'
         - name: CFNSignalEnd
           action: aws:branch
@@ -630,14 +624,3 @@ Resources:
         Ref: "SSMWaitHandle"
       Timeout: "3600"
       Count: 1
-# Outputs:
-#   EKSClusterName:
-#     Value: !GetAtt EKSStack.Outputs.EKSClusterName
-#   BastionIP:
-#     Value: !GetAtt EKSStack.Outputs.BastionIP
-#   BastionSecurityGroup:
-#     Value: !GetAtt EKSStack.Outputs.BastionSecurityGroup
-#   NodeGroupSecurityGroup:
-#     Value: !GetAtt EKSStack.Outputs.NodeGroupSecurityGroup
-#   OIDCIssuerURL:
-#     Value: !GetAtt EKSStack.Outputs.OIDCIssuerURL
