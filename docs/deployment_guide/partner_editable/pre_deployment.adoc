@@ -1,3 +1,18 @@
 //Include any predeployment steps here, such as signing up for a Marketplace AMI or making any changes to a partner account. If there are no predeployment steps, leave this file empty.
 
 == Predeployment steps
+
+=== Parameter Reference
+
+.MuleSoft configuration 
+
+|===
+|Parameter label (name) |Default value |Description
+
+// Space needed to maintain table headers
+|Runtime Fabric name (`RTFFabricName`) |Requires input |Runtime Fabric name in Anypoint Platform Console
+|Organization ID (`OrgID`) |Requires input |The organization ID for your Anypoint Platform account
+|User name (`UserName`) |Requires input |The username for your Anypoint Platform account
+|Password (`Password`) |Requires input |The password for your Anypoint Platform account
+|Mule license key (`MuleLicenseKeyinbase64`) |Requires input |Your Mule license key in Base64 format
+|===

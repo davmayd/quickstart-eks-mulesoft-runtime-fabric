@@ -1,12 +1,12 @@
 :quickstart-project-name: quickstart-repo-name
 :quickstart-github-org: aws-quickstart
-:partner-product-name: Full Product Name
-:partner-product-short-name: Product Name
-:partner-company-name: Example Company Name, Ltd.
-:doc-month: January
+:partner-product-name: Anypoint Runtime Fabric
+:partner-product-short-name: Runtime Fabric
+:partner-company-name: MuleSoft
+:doc-month: August
 :doc-year: 2022
-:partner-contributors: John Smith, {partner-company-name}
-// :other-contributors: Akua Mansa, Trek10
+:partner-contributors: Sandeep Deshmukh, {partner-company-name}
+ :other-contributors: Sparsh Agarwal, Digvijay Kulkarni
 :aws-contributors: Janine Singh, AWS IoT Partner team
 :aws-ia-contributors: Toni Jones, AWS Integration & Automation team
 :deployment_time: 15 minutes
