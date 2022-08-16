@@ -7,8 +7,8 @@
 :doc-year: 2022
 :partner-contributors: Sandeep Deshmukh, {partner-company-name}
  :other-contributors: Sparsh Agarwal, Digvijay Kulkarni
-:aws-contributors: Janine Singh, AWS IoT Partner team
-:aws-ia-contributors: Toni Jones, AWS Integration & Automation team
+:aws-contributors: Kranthi Pullagurla, Dave May
+:aws-ia-contributors: Kranthi Pullagurla, Dave May
 :deployment_time: 15 minutes
 :default_deployment_region: us-east-1
 // :private_repo:
