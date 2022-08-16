@@ -2,7 +2,6 @@
 
 This Quick Start provides the following deployment options:
 
-* http://qs_launch_permalink[Deploy {partner-product-short-name} into a new VPC and a new Amazon EKS cluster^]. This option builds a new AWS environment consisting of the VPC, subnets, NAT gateways, security groups, bastion hosts, Amazon EKS cluster, and other infrastructure components. It then deploys Runtime fabric into this new EKS cluster.
 * http://qs_launch_permalink[Deploy {partner-product-short-name} into an existing VPC and a new Amazon EKS cluster^]. This option provisions {partner-product-short-name} in your existing AWS infrastructure.
 * http://qs_launch_permalink[Deploy Runtime Fabric into an existing VPC and an existing Amazon EKS cluster]. This option provisions Runtime Fabric in your existing AWS infrastructure.
 
