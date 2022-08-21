@@ -1,3 +1,12 @@
 // Include any postdeployment steps here, such as steps necessary to test that the deployment was successful. If there are no postdeployment steps, leave this file empty.
 
 == Postdeployment steps
+
+Configure the MuleSoft Runtime Fabric cluster.
+
+. Log in to the MuleSoft Anypoint Control Plane and navigate to Runtime Manager. 
+. From Runtime Manager, select the cluster you created. 
+. Select the new Runtime Fabric cluster that you created.
+. Click the *Associated Environments* tab.
+. Add the appropriate Business Group, and select the environments to be added to Runtime Fabric.
+. Click *Apply Allocation*.
