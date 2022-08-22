@@ -1,14 +1,14 @@
-:quickstart-project-name: quickstart-repo-name
+:quickstart-project-name: quickstart-eks-mulesoft-runtime-fabric
 :quickstart-github-org: aws-quickstart
 :partner-product-name: Anypoint Runtime Fabric
 :partner-product-short-name: Runtime Fabric
 :partner-company-name: MuleSoft
 :doc-month: August
 :doc-year: 2022
-:partner-contributors: Sandeep Deshmukh, {partner-company-name}
- :other-contributors: Sparsh Agarwal, Digvijay Kulkarni
-:aws-contributors: Kranthi Pullagurla, Dave May
-:aws-ia-contributors: Kranthi Pullagurla, Dave May
+:partner-contributors: Sandeep Deshmukh, Sparsh Agarwal, and Digvijay Kulkarni, {partner-company-name}
+//:other-contributors:
+:aws-contributors: Kranthi Pullagurla, AWS Strategic ISVs
+:aws-ia-contributors: Dave May, AWS Integration and Automation
 :deployment_time: 15 minutes
 :default_deployment_region: us-east-1
 // :private_repo:
